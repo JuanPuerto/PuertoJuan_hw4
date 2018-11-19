@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+using namespace std;
+
 #define k 1.62	//conductividad termica en m²*s⁻¹
 #define Cp 820	//calor especifico en J*kg⁻¹*K⁻¹
 #define rho 2710	//densidad en kg*m⁻³
@@ -12,25 +14,25 @@
 #define N 100	//espaciamiento en lugar
 #define n 100.0	//espaciamiento
 #define sal 50000 //movimientos en el tiempo
-#define T_CALCITA 10.0
-#define T_VARILLA 100.0
 
 #define for_i for(int i=0;i<N;i++) //loop de i para no tener que escribirlo todas las veces
 #define for_j for(int j=0;j<N;j++) //loop de j para no tener que escribirlo todas las veces
 
-double nu = (double(k)/double(Cp*rho))*(double(dt)/double(dx*dx));
 double dx = 50.0/n;
 double dy = 50.0/n;
+double nu = (double(k)/double(Cp*rho))*(double(dt)/double(dx*dx));
 
 double Tpre[N][N], Tfut[N][N];
 
 void inicial(double,double,double);
+void extremos();
 
 int main()
 {
 	double mitad = (n*dx)/2.0;
 	double distancia_x = 0.0;
 	double distancia_y = 0.0;
+	
 	
 	return 0;
 }
@@ -54,4 +56,24 @@ void inicial(double mitad, double distancia_x, double distancia_y)
 			}
 		}
 	}
+}
+
+void extremos()
+{
+	ofstream inicio;
+	inicio.open("inicio.dat");
+	
+	for_i
+	{
+		for_j
+		{
+			inicio<<Tpre[i][j]<<",";
+			
+			if(j==(N-1))
+			{
+				inicio<<Tpre[i][j]<<endl;
+			}
+		}
+	}
+	inicio.close();
 }
