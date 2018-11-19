@@ -116,6 +116,7 @@ void extremos(string a)
 	inicio.close();
 }
 
+//condiciones para el sistema con extremos fijos
 void fijos(double mitad,double distancia_x,double distancia_y)
 {
 	double eje_x = 0;
@@ -147,7 +148,8 @@ void fijos(double mitad,double distancia_x,double distancia_y)
 	}
 }
 
-void libres(double distancia_x,double distancia_y)
+//condiciones para el sistema con extremos libres
+void libres(double mitad,double distancia_x,double distancia_y)
 {
 	double eje_x = 0;
 	double eje_y = 0;
@@ -155,6 +157,9 @@ void libres(double distancia_x,double distancia_y)
 	{
 		for_j
 		{
+			distancia_x=((i*dx)-mitad)*((i*dx)-mitad);
+			distancia_y=((j*dy)-mitad)*((j*dy)-mitad);
+			
 			if(i==0)
 			{
 				Tpre[i][j] = Tpre[i+1][j];
@@ -190,7 +195,8 @@ void libres(double distancia_x,double distancia_y)
 	}
 }
 
-void periodica(double distancia_x,double distancia_y)
+//condiciones para el sistema periodico
+void periodica(double mitad,double distancia_x,double distancia_y)
 {
 	double eje_x = 0;
 	double eje_y = 0;
@@ -198,6 +204,9 @@ void periodica(double distancia_x,double distancia_y)
 	{
 		for_j
 		{
+			distancia_x=((i*dx)-mitad)*((i*dx)-mitad);
+			distancia_y=((j*dy)-mitad)*((j*dy)-mitad);
+			
 			if(i==0)
 			{
 				Tpre[i][j] = Tpre[i+N-2][j];
@@ -259,6 +268,7 @@ void todo(void(*f)(double,double,double),double mitad,double distancia_x,double 
 		t += dt;
 		eje_z ++;
 		
+		//hace la primera grafica dependiendo del caso
 		if(eje_z==(sal/r))
 		{
 			ofstream sistema0;
@@ -278,6 +288,7 @@ void todo(void(*f)(double,double,double),double mitad,double distancia_x,double 
 			}
 			sistema0.close();
 		}
+		//hace la segunda grafica dependiendo del caso
 		else if(eje_z==(sal/s))
 		{
 			ofstream sistema1;
@@ -297,6 +308,7 @@ void todo(void(*f)(double,double,double),double mitad,double distancia_x,double 
 			}
 			sistema1.close();
 		}
+		//hace la tercera grafica dependiendo del caso
 		else if(eje_z==(sal-3))
 		{
 			ofstream sistema2;
@@ -317,7 +329,7 @@ void todo(void(*f)(double,double,double),double mitad,double distancia_x,double 
 			sistema2.close();
 		}
 	}
-	
+	//hace la grafica de la temperatura del sistema dependiendo del caso
 	ofstream tem;
 	tem.open(d);
 	for(int i=0;i<sal;i++)
