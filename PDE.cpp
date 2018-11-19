@@ -28,9 +28,10 @@ double Tpre[N][N], Tfut[N][N], p[sal];	//arreglos para pasos en el tiempo
 //funciones
 void inicial(double,double,double);
 void extremos(string);
-void fijos();
-void libres();
-void todo(void(*f),double,double,double,string,string,string,string,double,double);
+void fijos(double,double,double);
+void libres(double,double,double);
+void periodica(double,double,double);
+void todo(void (*f) (double,double,double),double,double,double,string,string,string,string,double,double);
 
 int main()
 {
@@ -48,6 +49,10 @@ int main()
 	string l3 = "libres3.dat";
 	string l4 = "temLibres.dat";
 	string p0 = "inicialesPeriodica.dat";
+	string p1 = "periodica1.dat";
+	string p2 = "periodica2.dat";
+	string p3 = "periodica3.dat";
+	string p4 = "temPeriodica.dat";
 	double r1 = 20.0;
 	double r2 = 10.0;
 	double r3 = 6.25;
@@ -60,6 +65,10 @@ int main()
 	inicial(mitad,distancia_x,distancia_y);
 	extremos(l0);
 	todo(libres,mitad,distancia_x,distancia_y,l1,l2,l3,l4,r3,r4);
+	
+	inicial(mitad,distancia_x,distancia_y);
+	extremos(p0);
+	todo(periodica,mitad,distancia_x,distancia_y,p1,p2,p3,p4,r3,r4);
 	
 	return 0;
 }
@@ -107,83 +116,135 @@ void extremos(string a)
 	inicio.close();
 }
 
-void fijos()
+void fijos(double mitad,double distancia_x,double distancia_y)
 {
-	if(i==0 || i==(N-1) || j==0 || j==(N-1))
+	double eje_x = 0;
+	double eje_y = 0;
+	for_i
 	{
-		Tpre[i][j] = 10.0;
-		Tfut[i][j] = Tpre[i][j];
-	}
-	else if(sqrt(distancia_x+distancia_y)<5)
-	{
-		Tpre[i][j] = 100.0;
-		Tpre[i][j] = Tpre[i][j];
-	}
-	else
-	{
-		eje_x = (Tpre[i+1][j]+Tpre[i-1][j]-2.0*Tpre[i][j]);
-		eje_y = (Tpre[i][j+1]+Tpre[i][j-1]-2.0*Tpre[i][j]);
-		Tfut[i][j] = Tpre[i][j]+nu*(eje_x+eje_y);
+		for_j
+		{
+			distancia_x=((i*dx)-mitad)*((i*dx)-mitad);
+			distancia_y=((j*dy)-mitad)*((j*dy)-mitad);
+				
+			if(i==0 || i==(N-1) || j==0 || j==(N-1))
+			{
+				Tpre[i][j] = 10.0;
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(sqrt(distancia_x+distancia_y)<5)
+			{
+				Tpre[i][j] = 100.0;
+				Tpre[i][j] = Tpre[i][j];
+			}
+			else
+			{
+				eje_x = (Tpre[i+1][j]+Tpre[i-1][j]-2.0*Tpre[i][j]);
+				eje_y = (Tpre[i][j+1]+Tpre[i][j-1]-2.0*Tpre[i][j]);
+				Tfut[i][j] = Tpre[i][j]+nu*(eje_x+eje_y);
+			}
+		}
 	}
 }
 
-void libres()
+void libres(double distancia_x,double distancia_y)
 {
-	if(i==0)
+	double eje_x = 0;
+	double eje_y = 0;
+	for_i
 	{
-		Tpre[i][j] = Tpre[i+1][j];
-		Tfut[i][j] = Tpre[i][j];
+		for_j
+		{
+			if(i==0)
+			{
+				Tpre[i][j] = Tpre[i+1][j];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(i==(N-1))
+			{
+				Tpre[i][j] = Tpre[i-1][j];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(j==0)
+			{
+				Tpre[i][j] = Tpre[i][j+1];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(j==(N-1))
+			{
+				Tpre[i][j] = Tpre[i][j-1];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(sqrt(distancia_x+distancia_y)<5)
+			{
+				Tpre[i][j] = 100.0;
+				Tpre[i][j] = Tpre[i][j];
+			}
+			else
+			{
+				eje_x = (Tpre[i+1][j]+Tpre[i-1][j]-2.0*Tpre[i][j]);
+				eje_y = (Tpre[i][j+1]+Tpre[i][j-1]-2.0*Tpre[i][j]);
+				Tfut[i][j] = Tpre[i][j]+nu*(eje_x+eje_y);
+			}
+		}
 	}
-	else if(i==(N-1))
+}
+
+void periodica(double distancia_x,double distancia_y)
+{
+	double eje_x = 0;
+	double eje_y = 0;
+	for_i
 	{
-		Tpre[i][j] = Tpre[i-1][j];
-		Tfut[i][j] = Tpre[i][j];
-	}
-	else if(j==0)
-	{
-		Tpre[i][j] = Tpre[i][j+1];
-		Tfut[i][j] = Tpre[i][j];
-	}
-	else if(j==(N-1))
-	{
-		Tpre[i][j] = Tpre[i][j-1];
-		Tfut[i][j] = Tpre[i][j];
-	}
-	else if(sqrt(distancia_x+distancia_y)<5)
-	{
-		Tpre[i][j] = 100.0;
-		Tpre[i][j] = Tpre[i][j];
-	}
-	else
-	{
-		eje_x = (Tpre[i+1][j]+Tpre[i-1][j]-2.0*Tpre[i][j]);
-		eje_y = (Tpre[i][j+1]+Tpre[i][j-1]-2.0*Tpre[i][j]);
-		Tfut[i][j] = Tpre[i][j]+nu*(eje_x+eje_y);
+		for_j
+		{
+			if(i==0)
+			{
+				Tpre[i][j] = Tpre[i+N-2][j];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(i==(N-1))
+			{
+				Tpre[i][j] = Tpre[i-N+2][j];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(j==0)
+			{
+				Tpre[i][j] = Tpre[i][j+N-2];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(j==(N-1))
+			{
+				Tpre[i][j] = Tpre[i][j-N+2];
+				Tfut[i][j] = Tpre[i][j];
+			}
+			else if(sqrt(distancia_x+distancia_y)<5)
+			{
+				Tpre[i][j] = 100.0;
+				Tpre[i][j] = Tpre[i][j];
+			}
+			else
+			{
+				eje_x = (Tpre[i+1][j]+Tpre[i-1][j]-2.0*Tpre[i][j]);
+				eje_y = (Tpre[i][j+1]+Tpre[i][j-1]-2.0*Tpre[i][j]);
+				Tfut[i][j] = Tpre[i][j]+nu*(eje_x+eje_y);
+			}
+		}
 	}
 }
 
 //sistema en distintos casos
-void todo(void(*f),double mitad,double distancia_x,double distancia_y,string a,string b,string c, string double r,double s)
+void todo(void(*f)(double,double,double),double mitad,double distancia_x,double distancia_y,string a,string b,string c, string d,double r,double s)
 {
 	double t = 0;
-	double eje_x = 0;
-	double eje_y = 0;
 	int eje_z = 0;
 
 	while(t<(sal*dt))
 	{
 		double pr = 0.0;
 		
-		for_i
-		{
-			for_j
-			{
-				distancia_x=((i*dx)-mitad)*((i*dx)-mitad);
-				distancia_y=((j*dy)-mitad)*((j*dy)-mitad);
-				
-				f();
-			}
-		}
+		f(mitad,distancia_x,distancia_y);
+		
 		
 		for_i
 		{
@@ -200,68 +261,68 @@ void todo(void(*f),double mitad,double distancia_x,double distancia_y,string a,s
 		
 		if(eje_z==(sal/r))
 		{
-			ofstream cerrado0;
-			cerrado0.open(a);
+			ofstream sistema0;
+			sistema0.open(a);
 			
 			for_i
 			{
 				for_j
 				{
-					cerrado0<<Tpre[i][j]<<",";
+					sistema0<<Tpre[i][j]<<",";
 					
 					if(j==(N-1))
 					{
-						cerrado0<<Tpre[i][j]<<endl;
+						sistema0<<Tpre[i][j]<<endl;
 					}
 				}
 			}
-			cerrado0.close();
+			sistema0.close();
 		}
 		else if(eje_z==(sal/s))
 		{
-			ofstream cerrado1;
-			cerrado1.open(b);
+			ofstream sistema1;
+			sistema1.open(b);
 			
 			for_i
 			{
 				for_j
 				{
-					cerrado1<<Tpre[i][j]<<",";
+					sistema1<<Tpre[i][j]<<",";
 					
 					if(j==(N-1))
 					{
-						cerrado1<<Tpre[i][j]<<endl;
+						sistema1<<Tpre[i][j]<<endl;
 					}
 				}
 			}
-			cerrado1.close();
+			sistema1.close();
 		}
 		else if(eje_z==(sal-3))
 		{
-			ofstream cerrado2;
-			cerrado2.open(c);
+			ofstream sistema2;
+			sistema2.open(c);
 			
 			for_i
 			{
 				for_j
 				{
-					cerrado2<<Tpre[i][j]<<",";
+					sistema2<<Tpre[i][j]<<",";
 					
 					if(j==(N-1))
 					{
-						cerrado2<<Tpre[i][j]<<endl;
+						sistema2<<Tpre[i][j]<<endl;
 					}
 				}
 			}
-			cerrado2.close();
+			sistema2.close();
 		}
 	}
 	
-	ofstream pro;
-	pro.open(d);
+	ofstream tem;
+	tem.open(d);
 	for(int i=0;i<sal;i++)
 	{
-		pro<<p[i]<<endl;
+		tem<<p[i]<<endl;
 	}
-	pro.close();
+	tem.close();
 }
