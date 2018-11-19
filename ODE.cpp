@@ -20,12 +20,16 @@ double prim_derx(double);
 double seg_derx(double,double);
 double prim_dery(double);
 double seg_dery(double,double);
+void inicial(double);
+void avance();
 
 using namespace std;
 
 int main()
 {
-	
+	double ang0 = (45*pi)/180;
+	inicial(ang0);
+	avance();
 	
 	return 0;
 }
@@ -48,4 +52,29 @@ double prim_dery(double vel_y)
 double seg_dery(double vel_x,double vel_y)
 {
 	return -g-(c/m)*vel_y*sqrt((vel_x*vel_x)+(vel_y*vel_y));
+}
+
+void inicial(double ang0)
+{
+	x_dir[0] = 0.0;
+	y_dir[0] = 0.0;
+	vel_x[0] = (sin(ang0))*300.0;
+	vel_y[0] = (cos(ang0))*300.0;
+	t[0] = 0.0;
+}
+
+void avance()
+{
+	x_dir[1] = x_dir[0]+(dt*prim_derx(vel_x[0]));
+	y_dir[1] = y_dir[0]+(dt*prim_dery(vel_y[0]));
+	vel_x[1] = vel_x[0]+(dt*seg_derx(vel_x[0],vel_y[0]));
+	vel_y[1] = vel_y[0]+(dt*seg_dery(vel_x[0],vel_y[0]));
+	
+	for_i1
+	{
+		x_dir[i+1] = x_dir[i-1]+(2.0*dt*prim_derx(vel_x[i-1]));
+		y_dir[i+1] = y_dir[i-1]+(2.0*dt*prim_dery(vel_y[i-1]));
+		vel_x[i+1] = vel_x[i-1]+(2.0*dt*seg_derx(vel_x[i-1],vel_y[i-1]));
+		vel_y[i+1] = vel_y[i-1]+(2.0*dt*seg_dery(vel_x[i-1],vel_y[i-1]));
+	}
 }
