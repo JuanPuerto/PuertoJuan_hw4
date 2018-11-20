@@ -31,7 +31,6 @@ ang_x=["x10","x20","x30","x40","x50","x60","x70"]
 ang_y=["y10","y20","y30","y40","y50","y60","y70"]
 ang=[10,20,30,40,50,60,70]
 
-"""
 variosAng=np.genfromtxt("variosAng.dat")
 
 n=int(np.shape(variosAng)[0]/len(ang_x))
@@ -58,7 +57,7 @@ for i in range(len(ang_x)):
 	for j in range(1000,N):
 		if(abs(ang_y[i][j])<no):
 			no=ang_y[i][j]
-			hola[i]=ang_x[i][j]"""
+			hola[i]=ang_x[i][j]
 
 #tercer punto (PDE)
 
