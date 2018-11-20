@@ -1,5 +1,7 @@
-resultados.tex: plots.tex
-	pdflatex Resultados_hw4.tex
+all: resultados_hw4.pdf
+
+resultados_hw4.pdf: Resultados_hw4.tex plots.tex
+	pdflatex $<
 	
 plots.tex: Plots_hw4.py ode.dat pde.dat
 	python3 Plots_hw4.py
