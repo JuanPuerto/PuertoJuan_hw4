@@ -22,41 +22,20 @@ double seg_derx(double,double);
 double prim_dery(double);
 double seg_dery(double,double);
 void inicial(double);
-void avance();
-void super_avance();
-void otros_angulos();
+void avance(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double));
+void super_avance(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double));
+void otros_angulos(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double));
 
 using namespace std;
 
 int main()
 {
 	double ang0 = (45*pi)/180;
+	
 	inicial(ang0);
-	avance();
-	
-	ofstream angulo0;
-	angulo0.open("ang45.dat");
-	for_i0
-	{
-		angulo0<<x_dir[i]<<" "<<y_dir[i]<<" "<<vel_x[i]<<" "<<vel_y[i]<<endl;
-	}
-	angulo0.close();
-	
-	super_avance();
-	
-	ofstream angulo1;
-	angulo1.open("buenAng45.dat");
-	for_i0
-	{
-		angulo1<<x_dir[i]<<" "<<y_dir[i]<<" "<<vel_x[i]<<" "<<vel_y[i]<<endl;
-	}
-	angulo1.close();
-	
-	otros_angulos();
-	
-	cout<<"La maxima distancia horizontal que alcanza el proyectil con el angulo de 45° es 4.23822 metros"<<endl;
-	
-	cout<<"La maxima distancia horizontal que alcanza el proyectil con uno de los otros angulos es 5.18812 metros y la alcanza con el angulo de 20°"<<endl;
+	avance(prim_derx,seg_derx,prim_dery,seg_dery);
+	super_avance(prim_derx,seg_derx,prim_dery,seg_dery);	
+	otros_angulos(prim_derx,seg_derx,prim_dery,seg_dery);
 	
 	return 0;
 }
@@ -96,46 +75,75 @@ void inicial(double ang0)
 }
 
 //avanzamos tanto en la direccion de x como en y
-void avance()
+void avance(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double))
 {
-	x_dir[1] = x_dir[0]+(dt*prim_derx(vel_x[0]));
-	y_dir[1] = y_dir[0]+(dt*prim_dery(vel_y[0]));
-	vel_x[1] = vel_x[0]+(dt*seg_derx(vel_x[0],vel_y[0]));
-	vel_y[1] = vel_y[0]+(dt*seg_dery(vel_x[0],vel_y[0]));
+	x_dir[1] = x_dir[0]+(dt*f0(vel_x[0]));
+	y_dir[1] = y_dir[0]+(dt*f2(vel_y[0]));
+	vel_x[1] = vel_x[0]+(dt*f1(vel_x[0],vel_y[0]));
+	vel_y[1] = vel_y[0]+(dt*f3(vel_x[0],vel_y[0]));
 	
 	for_i1
 	{
-		x_dir[i+1] = x_dir[i-1]+(2.0*dt*prim_derx(vel_x[i-1]));
-		y_dir[i+1] = y_dir[i-1]+(2.0*dt*prim_dery(vel_y[i-1]));
-		vel_x[i+1] = vel_x[i-1]+(2.0*dt*seg_derx(vel_x[i-1],vel_y[i-1]));
-		vel_y[i+1] = vel_y[i-1]+(2.0*dt*seg_dery(vel_x[i-1],vel_y[i-1]));
+		x_dir[i+1] = x_dir[i-1]+(2.0*dt*f0(vel_x[i-1]));
+		y_dir[i+1] = y_dir[i-1]+(2.0*dt*f2(vel_y[i-1]));
+		vel_x[i+1] = vel_x[i-1]+(2.0*dt*f1(vel_x[i-1],vel_y[i-1]));
+		vel_y[i+1] = vel_y[i-1]+(2.0*dt*f3(vel_x[i-1],vel_y[i-1]));
+	}
+	ofstream angulo0;
+	angulo0.open("ang45.dat");
+	for_i0
+	{
+		angulo0<<x_dir[i]<<" "<<y_dir[i]<<" "<<vel_x[i]<<" "<<vel_y[i]<<endl;
 	}
 }
 
 //repetir el avance para el resto de posiciones
-void super_avance()
+void super_avance(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double))
 {
 	for_i1
 	{
-		x_dir[i] = x_dir[i-1]+(dt*prim_derx(vel_x[i-1]));
-		y_dir[i] = y_dir[i-1]+(dt*prim_dery(vel_y[i-1]));
-		vel_x[i] = vel_x[i-1]+(dt*seg_derx(vel_x[i-1],vel_y[i-1]));
-		vel_y[i] = vel_y[i-1]+(dt*seg_dery(vel_x[i-1],vel_y[i-1]));
+		x_dir[i] = x_dir[i-1]+(dt*f0(vel_x[i-1]));
+		y_dir[i] = y_dir[i-1]+(dt*f2(vel_y[i-1]));
+		vel_x[i] = vel_x[i-1]+(dt*f1(vel_x[i-1],vel_y[i-1]));
+		vel_y[i] = vel_y[i-1]+(dt*f3(vel_x[i-1],vel_y[i-1]));
 	}
+	ofstream angulo1;
+	angulo1.open("buenAng45.dat");
+	for_i0
+	{
+		angulo1<<x_dir[i]<<" "<<y_dir[i]<<" "<<vel_x[i]<<" "<<vel_y[i]<<endl;
+	}
+	angulo1.close();
 }
 
 //avance para angulos de 10,20,30,40,50,60 y 70 grados
-void otros_angulos()
+void otros_angulos(double(*f0)(double),double(*f1)(double,double),double(*f2)(double),double(*f3)(double,double))
 {
 	ofstream angulo2;
 	angulo2.open("variosAng.dat");
 	
-	for(int i=10;i<=70;i+10)
-	{
-		double angulo = (i*pi)/180;
+	for(int i=1;i<8;i++)
+	{		
+		double angulo = (i*10*pi)/180;
 		
-		inicial(angulo);
-		avance();
+		x_dir[0] = 0.0;
+		y_dir[0] = 0.0;
+		vel_x[0] = (sin(angulo))*300.0;
+		vel_y[0] = (cos(angulo))*300.0;
+		t[0] = 0.0;
+		
+		x_dir[1] = x_dir[0]+(dt*f0(vel_x[0]));
+		y_dir[1] = y_dir[0]+(dt*f2(vel_y[0]));
+		vel_x[1] = vel_x[0]+(dt*f1(vel_x[0],vel_y[0]));
+		vel_y[1] = vel_y[0]+(dt*f3(vel_x[0],vel_y[0]));
+	
+		for_i1
+		{
+			x_dir[i+1] = x_dir[i-1]+(2.0*f0(vel_x[i-1]));
+			y_dir[i+1] = y_dir[i-1]+(2.0*dt*f2(vel_y[i-1]));
+			vel_x[i+1] = vel_x[i-1]+(2.0*dt*f1(vel_x[i-1],vel_y[i-1]));
+			vel_y[i+1] = vel_y[i-1]+(2.0*dt*f3(vel_x[i-1],vel_y[i-1]));
+		}
 		
 		for_i0
 		{
@@ -143,4 +151,9 @@ void otros_angulos()
 		}
 	}
 	angulo2.close();
+	
+	//hallados a mano y solo impresos en la terminal
+	cout<<"La maxima distancia horizontal que alcanza el proyectil con el angulo de 45° es 4.23822 metros"<<endl;
+	
+	cout<<"La maxima distancia horizontal que alcanza el proyectil con uno de los otros angulos es 5.18812 metros y la alcanza con el angulo de 20°"<<endl;
 }
