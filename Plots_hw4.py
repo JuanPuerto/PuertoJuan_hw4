@@ -10,12 +10,12 @@ y = ang45[:,1]
 vx = ang45[:,2]
 vy = ang45[:,3]
 
-aux1=10
-valor45=0
+tequila1=10
+anguila45=0
 for j in range(1000,len(x)):
-	if(abs(y[j])<aux1):
-		aux1=y[j]
-		valor45=x[j]
+	if(abs(y[j])<tequila1):
+		tequila1=y[j]
+		anguila45=x[j]
 
 
 plt.figure()
@@ -31,7 +31,7 @@ ang_x=["x10","x20","x30","x40","x50","x60","x70"]
 ang_y=["y10","y20","y30","y40","y50","y60","y70"]
 ang=[10,20,30,40,50,60,70]
 
-
+"""
 variosAng=np.genfromtxt("variosAng.dat")
 
 n=int(np.shape(variosAng)[0]/len(ang_x))
@@ -51,24 +51,22 @@ plt.legend()
 plt.savefig("variosAng.pdf")
 
 
-valorMax=np.linspace(10,100,7)
+hola=np.linspace(10,100,7)
 
-#con esta funcion saque los valores maximos en x, los inserte en c++
-for i in range(len(angulosx)):
-	aux=100
+for i in range(len(ang_x)):
+	no=100
 	for j in range(1000,N):
-		if(abs(angulosy[i][j])<aux):
-			aux=angulosy[i][j]
-			valorMax[i]=angulosx[i][j]
+		if(abs(ang_y[i][j])<no):
+			no=ang_y[i][j]
+			hola[i]=ang_x[i][j]"""
 
 #tercer punto (PDE)
 
 ##condiciones iniciales de extremos fijos
 iniFijos=np.genfromtxt("inicialesFijos.dat",delimiter=",")
 
-s=np.shape(iniFijos)
-y0=np.linspace(0,50,s[0])
-x0=np.linspace(0,50,s[1])
+y0=np.linspace(0,50,np.shape(iniFijos)[0])
+x0=np.linspace(0,50,np.shape(iniFijos)[1])
 x0,y0=np.meshgrid(x0,y0)
 
 fig=plt.figure()
@@ -101,7 +99,7 @@ eje3.set_zlim(0,100)
 plt.savefig("fijos1.pdf")
 
 ##momento 2 en extremos fijos
-fijos2=np.genfromtxt("fijos2.txt",delimiter=",")
+fijos2=np.genfromtxt("fijos2.dat",delimiter=",")
 
 y4=np.linspace(0,50,np.shape(fijos2)[0])
 x4=np.linspace(0,50,np.shape(fijos2)[1])
@@ -140,9 +138,8 @@ plt.savefig("fijos3.pdf")
 ##condiciones iniciales de extremos libres
 iniLibres=np.genfromtxt("inicialesLibres.dat",delimiter=",")
 
-s1=np.shape(iniLibres)
-y1=np.linspace(0,50,s1[0])
-x1=np.linspace(0,50,s1[1])
+y1=np.linspace(0,50,np.shape(iniLibres)[0])
+x1=np.linspace(0,50,np.shape(iniLibres)[1])
 x1,y1=np.meshgrid(x1,y1)
 
 fig1=plt.figure()
@@ -211,11 +208,10 @@ eje8.set_zlabel("T(°C)")
 plt.savefig("libres3.pdf")
 
 #condiciones iniciales de sistema periodico
-iniPeriodico=np.genfromtxt("inicialesPeriodica.txt",delimiter=",")
+iniPeriodico=np.genfromtxt("inicialesPeriodica.dat",delimiter=",")
 
-s2=np.shape(iniPeriodico)
-y2=np.linspace(0,50,dis[0])
-x2=np.linspace(0,50,dis[1])
+y2=np.linspace(0,50,np.shape(iniPeriodico)[0])
+x2=np.linspace(0,50,np.shape(iniPeriodico)[1])
 x2,y2=np.meshgrid(x2,y2)
 
 fig2=plt.figure()
@@ -283,9 +279,9 @@ eje11.set_zlabel("T(°C)")
 plt.savefig("periodica3.pdf")
 
 ##graficas de la temperatura del sistema en los diferentes casos
-temFijos=np.genfromtxt("temFijos.txt")
-temLibres=np.genfromtxt("temLibres.txt")
-temmPeriodico=np.genfromtxt("temPeriodica.txt")
+temFijos=np.genfromtxt("temFijos.dat")
+temLibres=np.genfromtxt("temLibres.dat")
+temPeriodica=np.genfromtxt("temPeriodica.dat")
 
 dt=0.00003
 t=np.linspace(0,dt*len(temFijos),len(temFijos))
