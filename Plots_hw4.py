@@ -54,7 +54,7 @@ hola=np.linspace(10,100,7)
 
 for i in range(len(ang_x)):
 	no=100
-	for j in range(1000,N):
+	for j in range(1000,n):
 		if(abs(ang_y[i][j])<no):
 			no=ang_y[i][j]
 			hola[i]=ang_x[i][j]
