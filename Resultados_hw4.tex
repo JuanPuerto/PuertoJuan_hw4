@@ -1,0 +1,142 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{anysize}
+\marginsize{3cm}{2.5cm}{0.5cm}{2.5cm}
+\title{Taller 4 - Métodos computacionales}
+\author{Juan Sebastian Puerto León}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Segundo punto (ODE)}
+
+Aquí, se observa el movimiento de un proyectil a 45 grados (ángulo con el que alcanza la mayor distancia horizontal posible) con fricción del aire proporcional a $v^2$.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Trayectoria del proyectil a 45 grados}
+	\includegraphics[scale=0.5]{ang45.pdf}
+\end{figure}
+
+Por otro lado, el lanzamiento del proyectil con ángulos 10, 20, 30, 40, 50, 60 y 70 grados se hace para ver con cual de estos ángulos se obtiene la mayor distancia horizontal. Así, la mayor distancia (5.18m) se da con el ángulo de 20 grados.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Trayectoria del proyectil entre 10 y 70 grados}
+	\includegraphics[scale=0.5]{variosAng.pdf}
+\end{figure}
+
+\section*{Tercer punto (PDE)}
+
+Aquí, se aprecia una placa de calcita de 50cm, en cuyo interior posee una barra centrada de 5cm de radio con temperatura fija de 100 grados. Además, se modelaron los cambios de temperatura de la placa en dos momentos de tiempo. La condición inicial se percibe para tres casos frontera.
+
+\subsection*{Extremos fijos}
+
+En el primer caso, la placa de calcita tiene bordes e interior con temperatura constante de 10 grados y la barra en us interior se encuentra a a 100 grados.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento inicial del sistema con extremos fijos}
+	\includegraphics[scale=0.5]{iniFijos.pdf}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 1 del sistema con extremos fijos}
+	\includegraphics[scale=0.5]{fijos1.pdf}
+\end{figure}
+
+Para este caso, se realizaron 50000 pasos cada uno de 0.00003 segundos para mostrar el cambio de temperatura de la placa. Así, se realizan tres gráficas de 0.075, 0.15 y 1.5 segundos. En todas las gráficas se observa un gradiente continuo al interior de la placa de 100 grados, mientras que los extremos siguen a 10 grados.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 2 del sistema con extremos fijos}
+	\includegraphics[scale=0.5]{fijos2.pdf}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento final del sistema con extremos fijos}
+	\includegraphics[scale=0.5]{fijos3.pdf}
+\end{figure}
+
+\subsection*{Extremos libres}
+
+Para el caso de extremos fijos se tiene una barra de metal a 100 grados dentro de un placa a 10 grados pero, los extremos pueden cambiar su temperatura.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento inicial del sistema con extremos libres}
+	\includegraphics[scale=0.5]{iniLibres.pdf}
+\end{figure}
+
+Como se mencionó anteriormente, las figuras permiten observar el cambio en la temperatura de la placa, la cual tiende a equilibrarse con la de la barra. En la primera etapa, la placa tiene una difusión similar al caso con los extremos fijos. Pero, la temperatura empieza a ascender en los extremos hasta que se acerca a los 100 grados, donde su cambio de temperatura se da de manera equilibrada.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 1 del sistema con extremos libres}
+	\includegraphics[scale=0.5]{libres1.pdf}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 2 del sistema con extremos libres}
+	\includegraphics[scale=0.5]{libres2.pdf}
+\end{figure}
+
+En el momento final, la temperatura de la placa es casi idéntica a la de la barra, por lo que es de esperar que la temperatura se encuentre en un mismo valor a lo largo de la placa.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento final del sistema con extremos libres}
+	\includegraphics[scale=0.5]{libres3.pdf}
+\end{figure}
+
+\subsection*{Placa periódica}
+
+En este caso, la placa de calcita tiene bordes e interior con temperatura constante de 10 grados y la barra en us interior se encuentra a a 100 grados. Además, el sistema es periódico asumiendo cambio de energía en el sistema global.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento inicial del sistema de manera periódica}
+	\includegraphics[scale=0.5]{iniPeriodica.pdf}
+\end{figure}
+
+En esta etapa, la placa tiene una difusión similar al caso con los extremos libres. Pero, la temperatura empieza a ascender en los extremos hasta que se acerca a los 100 grados, donde su cambio de temperatura se da de manera equilibrada.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 1 del sitema de manera periódica}
+	\includegraphics[scale=0.5]{periodica1.pdf}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento 2 del sistema de manera periódica}
+	\includegraphics[scale=0.5]{periodica2.pdf}
+\end{figure}
+
+En este estado, la temperatura de la placa es muy similar a la de la barra. Además, se observa un cambio de temperatura casi idéntico en las diferentes direcciones del sitema.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Momento final del sistema de manera periódica}
+	\includegraphics[scale=0.5]{periodica3.pdf}
+\end{figure}
+
+\subsection*{Temperatura promedio de la placa}
+
+En esta parte, se ve que el intercambio de energía es idéntica para los tres posibles arreglos al principio. Después, la placa con extremos fijos aumenta su temperatura casi linealmente; mientras tanto, los otros dos arreglos muestran un difusión muy cercana.
+
+\begin{figure}[h!]
+	\centering
+	\caption{Temperatura en función del tiempo para los tres casos anteriores}
+	\includegraphics[scale=0.5]{temSistema.pdf}
+\end{figure}
+
+\end{document}
